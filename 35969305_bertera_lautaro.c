@@ -24,10 +24,10 @@
 struct Personaje {
     int id;              //Numero unico que identifica al personaje
     char nombre[30];    //Nombre del personaje (no puede repetirse)
-    int nivel = 1;
-    int vida = 10;
-    int ataque = 1;
-    int defensa = 1;
+    int nivel: 1;
+    int vida: 10;
+    int ataque: 1;
+    int defensa: 1;
     int puntosMejora;   //Puntos disponibles para asignar a atributos
 };
 
@@ -49,7 +49,40 @@ int main(){
 
 
 
+    int botonMenu;
+    //menu
+    do{
+        printf("\n\n\n\n--- MENU ---\n\n\n");
+        printf("\033[34m1. Crear personaje\n\033[0m");// \033[34m \033[0m  ES SOLO PARA PONER COLOR AL PRINTF()
+        printf("\033[34m2. Mejorar personaje\n\033[0m");
+        printf("\033[34m3. Luchar\n\033[0m");
+        printf("\033[34m4. Salir\n\033[0m");
+        printf("\n Elige una opcion: \n");
+        scanf("%d", &botonMenu);
 
+        switch (botonMenu) {
+            case 1:
+                printf("add");
+                break;
 
+            case 2:
+                printf("improve");
+                break;
 
+            case 3:
+                printf("fight");
+                break;
+
+            case 4:
+                printf("EXIT");
+                botonMenu=4;
+                break;
+
+            default:
+                printf("ERROR");
+                break;
+        }
+    }while(botonMenu!=4);
+
+    return 0;
 }
