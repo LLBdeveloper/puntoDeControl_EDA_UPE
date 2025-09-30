@@ -12,45 +12,64 @@
 //
 // DESCRIPCION: Sistema de gestion de personajes para juego de cartas.
 //              Permite crear personajes, mejorar atributos y simular
-//              combates utilizando memoria dinámica y validación de datos.
+//              combates utilizando memoria dinamica y validacion de datos.
 /////////////////////////////////////////////////////////////////////////////
 
 
 
-
+//librerias
 #include <stdio.h>
 #include <stdlib.h>
 
+//declaracion de structs
 struct Personaje {
     int id;              //Numero unico que identifica al personaje
-    char nombre[30];    //Nombre del personaje (no puede repetirse)
-    int nivel: 1;
-    int vida: 10;
-    int ataque: 1;
-    int defensa: 1;
+    char nombre[30];     //Nombre del personaje (no puede repetirse)
+    int nivel;
+    int vida;
+    int ataque ;
+    int defensa ;
     int puntosMejora;   //Puntos disponibles para asignar a atributos
 };
 
+//prototipo de funciones
+//void crearPersonaje(Personaje* personajes, int contadorPersonajes);
 
 
+/////////
+//MAIN
+////////
 int main(){
 
-    int contadorPersonajes;
+    int contadorPersonajes=0;
+
+
 
     //pedimos un maximo de personajes y lo almacenamos en el heap
     printf("Cuantos personajes como maximo se podran registrar???  \n");
-    int* maxHeap = (int*)malloc(sizeof(int));
-    if (maxHeap == NULL) {
+    int* maxCharacters = (int*)malloc(sizeof(int));
+    if (maxCharacters == NULL) {
         printf("Error: No hay memoria disponible\n");
         return 1;
     }
-    scanf("%d", maxHeap);
-    printf("El maximo de personajes para este juego es: %d \n", *maxHeap);
+    scanf("%d", maxCharacters);
+    printf("El maximo de personajes para este juego es: %d \n", *maxCharacters);
 
 
 
-    int botonMenu;
+
+    //reservamos espacio en el heap para el vector de estructuras Personaje
+    struct Personaje* personajes = (struct Personaje*)malloc(*maxCharacters * sizeof(struct Personaje));
+    if (personajes == NULL) {
+        printf("Error: No se cargo a listado de personajes\n");
+        return 1;
+    }
+
+
+
+
     //menu
+    int botonMenu;
     do{
         printf("\n\n\n\n--- MENU ---\n\n\n");
         printf("\033[34m1. Crear personaje\n\033[0m");// \033[34m \033[0m  ES SOLO PARA PONER COLOR AL PRINTF()
@@ -62,7 +81,13 @@ int main(){
 
         switch (botonMenu) {
             case 1:
-                printf("add");
+                //aca agregar condicion de maximo
+                //de personajes antes de ejecutar la funcion
+                if(contadorPersonajes<maxCharacters){
+                crearPersonaje(personajes,contadorPersonajes);
+                }else{
+                    printf("No hay mas lugar para personajes.");
+                }
                 break;
 
             case 2:
@@ -84,5 +109,80 @@ int main(){
         }
     }while(botonMenu!=4);
 
+    free(maxCharacters);
+
     return 0;
 }
+
+
+///////////////
+//Funciones
+//////////////
+
+
+//crea un nuevo struct Personaje y lo almacena directamente en personajes dentro del heap
+void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal){
+
+    //creamos una nueva instancia de struct personaje
+    struct Personaje* nuevo;
+    nuevo = listaPersonajes + *cantidadTotal;
+
+    nuevo->id = *cantidadTotal + 1;
+    nuevo->nivel = 1;
+    nuevo->vida = 10;
+    nuevo->ataque = 1;
+    nuevo->defensa = 1;
+    nuevo->puntosMejora = 10;
+    //pedimos nombre del personaje nuevo al usuario
+    //falta cambiar scanf por fgets
+    //falta verificar si no existe otro nombre igual
+    printf("Ingrese el nombre para su nuevo personaje:\n");
+    scanf("%s",nuevo->nombre);
+
+    //actualizamos el total de personajes
+    (*cantidadTotal)++;
+
+    //distribuir puntos de mejora
+
+
+
+}
+
+
+/*
+(listaPersonajes + *cantidadTotal)->id = *cantidadTotal + 1;
+scanf("%s", (listaPersonajes + *cantidadTotal)->nombre);
+(listaPersonajes + *cantidadTotal)->nivel = 1;
+(listaPersonajes + *cantidadTotal)->vida = 10;
+
+(*cantidadTotal)++;
+
+*/
+
+
+
+
+/*
+
+consigna
+
+void crearPersonaje(Personaje* personajes, int* cantidad);
+
+void mejorarPersonaje(Personaje* personajes, int cantidad);
+
+void luchar(Personaje* personajes, int cantidad);
+
+Personaje* buscarPorNombre(Personaje* personajes, int
+cantidad, const char* nombre);
+
+Personaje* buscarPorId(Personaje* personajes, int cantidad,
+int id);
+
+void mostrarPersonaje(Personaje p);
+
+void mostrarTodos(Personaje* personajes, int cantidad);
+
+*/
+
+
+
