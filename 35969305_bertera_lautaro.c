@@ -33,8 +33,8 @@ struct Personaje {
 };
 
 //prototipo de funciones
-//void crearPersonaje(Personaje* personajes, int contadorPersonajes);
-
+void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
+void mejorarPersonaje();
 
 /////////
 //MAIN
@@ -83,8 +83,8 @@ int main(){
             case 1:
                 //aca agregar condicion de maximo
                 //de personajes antes de ejecutar la funcion
-                if(contadorPersonajes<maxCharacters){
-                crearPersonaje(personajes,contadorPersonajes);
+                if(contadorPersonajes < *maxCharacters){
+                crearPersonaje(personajes,&contadorPersonajes);
                 }else{
                     printf("No hay mas lugar para personajes.");
                 }
@@ -110,6 +110,8 @@ int main(){
     }while(botonMenu!=4);
 
     free(maxCharacters);
+    free(personajes);
+
 
     return 0;
 }
@@ -120,7 +122,7 @@ int main(){
 //////////////
 
 
-//crea un nuevo struct Personaje y lo almacena directamente en personajes dentro del heap
+//crea un nuevo struct Personaje y lo almacena directamente en el heap
 void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal){
 
     //creamos una nueva instancia de struct personaje
@@ -142,11 +144,22 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal){
     //actualizamos el total de personajes
     (*cantidadTotal)++;
 
-    //distribuir puntos de mejora
+
+    printf("cantidad actual de PJs %d\n",*cantidadTotal);
 
 
-
+// llamar funcion mejorar pj
+    mejorarPersonaje();
 }
+
+
+void mejorarPersonaje(){
+    printf("mejorando pj, soy la funcion\n");
+}
+
+
+
+
 
 
 /*
