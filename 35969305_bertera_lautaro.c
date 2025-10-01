@@ -30,13 +30,13 @@
 // Declaracion de structs
 /////////////////////////
 struct Personaje {
-    int id;              // Numero unico que identifica al personaje
-    char nombre[30];     // Nombre del personaje (no puede repetirse)
+    int id;
+    char nombre[30];
     int nivel;
     int vida;
     int ataque;
     int defensa;
-    int puntosMejora;    // Puntos disponibles para asignar a atributos
+    int puntosMejora;
 };
 
 
@@ -57,10 +57,11 @@ void luchar(struct Personaje* personajes, int cantidadTotal);
 // MAIN
 /////////////////////////
 int main() {
+    //declaramos contador de personajes total y su puntero
     int contadorPersonajes = 0;
     int* pContadorPersonajes = &contadorPersonajes;
 
-    // pedimos un maximo de personajes y lo almacenamos en el heap
+    //pedimos un maximo de personajes y lo almacenamos en el heap
     printf("Cuantos personajes como maximo se podran registrar???\n");
     int* maxCharacters = (int*)malloc(sizeof(int));
     if (maxCharacters == NULL) {
@@ -70,14 +71,14 @@ int main() {
     scanf("%d", maxCharacters);
     printf("El maximo de personajes para este juego es: %d\n", *maxCharacters);
 
-    // reservamos espacio en el heap para el vector de estructuras Personaje
+    //reservamos espacio en el heap para el vector de estructuras Personaje
     struct Personaje* personajes = (struct Personaje*)malloc(*maxCharacters * sizeof(struct Personaje));
     if (personajes == NULL) {
         printf("Error: No se cargo a listado de personajes\n");
         return 1;
     }
 
-    // menu
+    //menu
     int botonMenu;
     do {
         printf("\n\n\n\n--- MENU ---\n\n\n");
@@ -127,6 +128,7 @@ int main() {
         }
     } while (botonMenu != 0);
 
+    //liberamos memoria
     free(maxCharacters);
     free(personajes);
 
@@ -146,7 +148,7 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
     char nombreIngresado[30];
     int valido = 0;
 
-    // validar nombre unico
+    //validar nombre unico
     while (!valido) {
         printf("Ingrese el nombre para su nuevo personaje: ");
         scanf("%s", nombreIngresado);
@@ -317,14 +319,14 @@ void mostrarPersonaje(struct Personaje* personajes, int cantidadTotal){
 //funcion
 //mostrar todos los personajes
 void mostrarTodos(struct Personaje* personajes, int cantidadTotal){
-
+    //verificamos que hay personajes
     if (cantidadTotal == 0) {
         printf("No hay personajes creados\n");
         return;
     }
 
+    //mostarmos todos los personajes
     printf("\n\n- TODOS LOS PERSONAJES - \n\n");
-
     for(int i=0; i < cantidadTotal; i++){
         printf("ID: %d\n", (personajes + i)->id);
         printf("Nombre: %s\n", (personajes + i)->nombre);
@@ -347,7 +349,7 @@ void luchar(struct Personaje* personajes, int cantidadTotal){
         printf("No hay un minimo de dos personajes creados\n");
         return;
     }
-    // mostramos todos los existentes
+    //mostramos todos los existentes
     mostrarTodos(personajes, cantidadTotal);
 
     //pedimos al usuario los id
@@ -366,9 +368,10 @@ void luchar(struct Personaje* personajes, int cantidadTotal){
     //capturamos los dos personajes que el usuario selecciona y se presentan los luchadores
     struct Personaje* atacante = buscarPorId(personajes, cantidadTotal, auxIdAtacante);
     struct Personaje* defensor = buscarPorId(personajes, cantidadTotal, auxIdDefensor);
+
+    //inicia la pelea con presentacion de luchadores
     printf("\n\n\n\n");
     printf("\033[31m\n\n    - - - - - - - -  %s  vs %s  - - - - - - - - -\n\n\033[0m\n",atacante->nombre,defensor->nombre);
-
 
     printf("\033[32m\n\nATRIBUTOS DEL JUGADOR ATACANTE\n\n\033[0m\n");
     printf("Nombre: %s\n", atacante->nombre);
@@ -386,32 +389,29 @@ void luchar(struct Personaje* personajes, int cantidadTotal){
 
     printf("\033[31m\n\n           !!!! ARRANCA LA PELEA !!!!  \n\n\033[0m\n",atacante->nombre,defensor->nombre);
 
-
+    //sacamos la cuenta del danio total
     printf("\n\n\n\n\n\n");
     int danio = (atacante->ataque - defensor->defensa);
-    defensor->vida = defensor->vida - danio;
     printf("\033[35m\n\n----- DANIO TOTAL %d ------\n\n\n\n\n \033[0m\n", danio);
 
-
+    //concional segun el danio y modifica los stats segun corresponda
     if(danio<=0){
-        printf("\033[33m\nGana el defensor llamado %s!!!!!!!!!!!\n\n Recibe +2 puntos de mejora\n\033[0m\n", defensor->nombre);
-        printf("\033[32mEl defensor recibe +2 puntos de mejora\n");
+        printf("\033[33m\n            Gana el defensor llamado %s!!!!!!!!!!!\n\n \033[0m\n", defensor->nombre);
+        printf("\033[32mEl defensor recibe +2 puntos de mejora\n\033[0m\n");
         defensor->puntosMejora += 2;
     }else{
         if(defensor->vida > 0){
-            printf("\033[33mGana el atacante de nombre %s!!!!!!!!!!!\n\n\033[0m\n",atacante->nombre);
+            printf("\033[33m               Gana el atacante de nombre %s!!!!!!!!!!!\n\n\033[0m\n",atacante->nombre);
 
             printf("\033[32mEl atacante recibe +1 punto demejora\n\033[0m\n");
             atacante->puntosMejora += 1;
 
             printf("\033[31m\n\n\n\nSe le resta el danio a la vida del defensor! \nVida actual del defensor: %d \n\033[0m\n", defensor->vida);
             defensor->vida = defensor->vida - danio;
-
-
         }else{
-            printf("\033[33m\nGana atacante de nombre %s y muere el defensor de nombre %s!!!!!!!!!!!\n\n\033[0m\n",atacante->nombre, defensor->nombre);
+            printf("\033[33m\n               Gana atacante de nombre %s y muere el defensor de nombre %s!!!!!!!!!!!\n\n\033[0m\n",atacante->nombre, defensor->nombre);
 
-            printf("\033[32m El atacante de nombre %srecibe +3 puntos de mejora y sube de nivel\n\033[0m\n",atacante->nombre); //cuando muere el def
+            printf("\033[32mEl atacante de nombre %srecibe +3 puntos de mejora y sube de nivel\n\033[0m\n",atacante->nombre); //cuando muere el def
             atacante->puntosMejora += 3;
             atacante->nivel += 1;
 
