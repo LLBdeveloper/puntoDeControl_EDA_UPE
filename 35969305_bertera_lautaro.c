@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 /////////////////////////
 // Declaracion de structs
 /////////////////////////
@@ -38,12 +39,14 @@ struct Personaje {
     int puntosMejora;    // Puntos disponibles para asignar a atributos
 };
 
+
 /////////////////////////
 // Prototipos de funciones
 /////////////////////////
 void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
 void mejorarPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
-struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidad, char* nombre);
+struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre);
+
 
 /////////////////////////
 // MAIN
@@ -233,16 +236,15 @@ void mejorarPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
 }
 
 // busca personaje por nombre con aritmetica de punt
-struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidad, char* nombre) {
+struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre) {
     struct Personaje* procesado = personajes;
     struct Personaje* encontrado = NULL;
 
-    for (int i = 0; i < cantidad; i++){
+    for (int i = 0; i < cantidadTotal; i++){
         if (strcmp((procesado + i)->nombre, nombre) ==0){
             encontrado = (procesado + i);
         }
     }
-
     return encontrado;
 }
 
