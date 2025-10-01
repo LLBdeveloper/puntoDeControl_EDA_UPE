@@ -44,7 +44,7 @@ struct Personaje {
 // Prototipos de funciones
 /////////////////////////
 void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
-void mejorarPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
+void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal);
 struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre);
 
 
@@ -93,7 +93,7 @@ int main() {
                 break;
 
             case 2:
-                mejorarPersonaje(personajes, pContadorPersonajes);
+                mejorarPersonaje(personajes, *pContadorPersonajes);
                 break;
 
             case 3:
@@ -186,14 +186,14 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
 }
 
 // asigna lospuntos de mejora a un personaje buscado por nombre
-void mejorarPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
+void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal) {
     char buscado[30];
     int auxEleccion;
 
     printf("Ingrese el nombre del personaje a mejorar: ");
     scanf("%s", buscado);
 
-    struct Personaje* personajeActual = buscarPorNombre(listaPersonajes, *cantidadTotal, buscado);
+    struct Personaje* personajeActual = buscarPorNombre(listaPersonajes, cantidadTotal, buscado);
 
     if (personajeActual == NULL) {
         printf("\nNo existe un personaje con ese nombre.\n");
