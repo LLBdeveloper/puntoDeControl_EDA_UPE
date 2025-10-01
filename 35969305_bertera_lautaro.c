@@ -16,8 +16,9 @@
 /////////////////////////////////////////////////////////////////////////////
 
 
-
+/////////////////////////
 //librerias
+/////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,16 +33,22 @@ struct Personaje {
     int puntosMejora;   //Puntos disponibles para asignar a atributos
 };
 
+/////////////////////////
 //prototipo de funciones
+/////////////////////////
 void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
-void mejorarPersonaje();
+void mejorarPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
 
-/////////
+
+
+/////////////////////////
 //MAIN
-////////
+/////////////////////////
 int main(){
 
     int contadorPersonajes=0;
+    int *pContadorPersonajes;
+    pContadorPersonajes = &contadorPersonajes;
 
 
 
@@ -83,8 +90,8 @@ int main(){
             case 1:
                 //aca agregar condicion de maximo
                 //de personajes antes de ejecutar la funcion
-                if(contadorPersonajes < *maxCharacters){
-                crearPersonaje(personajes,&contadorPersonajes);
+                if(*pContadorPersonajes < *maxCharacters){
+                crearPersonaje(personajes,pContadorPersonajes);
                 }else{
                     printf("No hay mas lugar para personajes.");
                 }
@@ -104,7 +111,7 @@ int main(){
                 break;
 
             default:
-                printf("ERROR");
+                printf("- ERROR - \nIngreso invalido");
                 break;
         }
     }while(botonMenu!=4);
@@ -117,9 +124,9 @@ int main(){
 }
 
 
-///////////////
+/////////////////////////
 //Funciones
-//////////////
+/////////////////////////
 
 
 //crea un nuevo struct Personaje y lo almacena directamente en el heap
@@ -143,18 +150,39 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal){
 
     //actualizamos el total de personajes
     (*cantidadTotal)++;
-
-
     printf("cantidad actual de PJs %d\n",*cantidadTotal);
 
 
-// llamar funcion mejorar pj
-    mejorarPersonaje();
+    mejorarPersonaje(listaPersonajes,cantidadTotal);
 }
 
 
-void mejorarPersonaje(){
-    printf("mejorando pj, soy la funcion\n");
+
+// asignas los puntos de mejora
+void mejorarPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal){
+    int auxEleccion;
+    printf("\nQueres agregar un punto a vida, ataque o defensa??\n\n ");
+    printf("Escribir 1 para sumar punto a vida\nEscribir 2 para sumar punto a ataque\nEscribir 3 para sumar punto a defensa ");
+    scanf("%d",&auxEleccion);
+
+    switch(auxEleccion){
+
+        case 1:
+            printf("sumar a vida");
+            break;
+        case 2:
+            printf("sumar a ataque");
+            break;
+        case 3:
+            printf("sumar a defensa");
+            break;
+        default:
+            printf("- ERROR - \nIngreso invalido");
+            break;
+
+    }
+
+
 }
 
 
@@ -169,9 +197,7 @@ scanf("%s", (listaPersonajes + *cantidadTotal)->nombre);
 (listaPersonajes + *cantidadTotal)->vida = 10;
 
 (*cantidadTotal)++;
-
 */
-
 
 
 
