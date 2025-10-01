@@ -275,7 +275,7 @@ void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal) {
     }while(personajeActual->puntosMejora > 0);
 
     //resultado
-    printf("\nProceso de mejora finalizado para %s\n", personajeActual->nombre);
+    printf("\033[32m\nProceso de mejora finalizado para %s\n\033[0m\n", personajeActual->nombre);
 }
 
 
@@ -427,12 +427,19 @@ void luchar(struct Personaje* personajes, int cantidadTotal){
     printf("Ataque: %d\n", defensor->ataque);
     printf("Defensa: %d\n", defensor->defensa);
 
-    printf("\033[31m\n\n           !!!! ARRANCA LA PELEA !!!!  \n\n\033[0m\n",atacante->nombre,defensor->nombre);
+
+
+    //lee las reglas del juego
+    printf("\033[34m<<<<< LAS REGLAS DEL COMBATE >>>>>\ndanio = ataqueAtacante MENOS defensaDefensor\033[0m\n");
+    printf("\033[34m     Si danio queda en 0 o menos: Gana el defensor y recibe +2 puntos de mejora       \033[0m\n");
+    printf("\033[34m     Si es mayor a cero: Gana el atacante y se le resta el danio a la vida del defensor. El atacante recibe +1 punto de mejora o +3 y sube de nivel si el defensor muere.        \033[0m\n");
+
+
+    printf("\033[31m\n\n\n           !!!! ARRANCA LA PELEA !!!!  \n\n\033[0m\n",atacante->nombre,defensor->nombre);
 
     //sacamos la cuenta del danio total
-    printf("\n\n\n\n\n\n");
     int danio = (atacante->ataque - defensor->defensa);
-    printf("\033[35m\n\n----- DANIO TOTAL %d ------\n\n\n\n\n \033[0m\n", danio);
+    printf("\033[35m\n           ----- DANIO TOTAL %d ------\n\n \033[0m\n", danio);
 
 
     //estructuraa de control  principal
