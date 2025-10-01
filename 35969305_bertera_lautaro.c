@@ -47,6 +47,9 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
 void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal);
 struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre);
 struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, int id);
+void mostrarPersonaje(struct Personaje* personajes, int cantidadTotal);
+void mostrarTodos(struct Personaje* personajes, int cantidadTotal);
+
 
 /////////////////////////
 // MAIN
@@ -76,10 +79,12 @@ int main() {
     int botonMenu;
     do {
         printf("\n\n\n\n--- MENU ---\n\n\n");
-        printf("\033[34m1. Crear personaje\n\033[0m");
-        printf("\033[34m2. Mejorar personaje\n\033[0m");
-        printf("\033[34m3. Luchar\n\033[0m");
-        printf("\033[34m4. Salir\n\033[0m");
+        printf("\033[34m1 - Crear personaje\n\033[0m");
+        printf("\033[34m2 - Mejorar personaje\n\033[0m");
+        printf("\033[34m3 - Luchar\n\033[0m");
+        printf("\033[34m4 - Buscar y ver personaje\n\033[0m");
+        printf("\033[34m5 - Ver todos los personajes\n\033[0m");
+        printf("\033[34m6 - Salir\n\033[0m");
         printf("\n Elige una opcion: ");
         scanf("%d", &botonMenu);
 
@@ -101,15 +106,24 @@ int main() {
                 break;
 
             case 4:
-                printf("EXIT\n");
-                botonMenu = 4;
+                mostrarPersonaje(personajes,*pContadorPersonajes);
                 break;
+
+            case 5:
+                printf("ver todos)\n");
+                mostrarTodos(personajes,*pContadorPersonajes);
+
+            case 6:
+                printf("EXIT\n");
+                botonMenu = 6;
+                break;
+
 
             default:
                 printf("- ERROR - Ingreso invalido\n");
                 break;
         }
-    } while (botonMenu != 4);
+    } while (botonMenu != 6);
 
     free(maxCharacters);
     free(personajes);
@@ -261,6 +275,53 @@ struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, i
     }
     return encontrado;
 }
+
+//mostrar personaje buscado por id
+void mostrarPersonaje(struct Personaje* personajes, int cantidadTotal){
+    int auxId;
+    printf("Ingrese ID del personaje que quiere ver:");
+    scanf("%d",&auxId);
+
+    struct Personaje* encontrado = buscarPorId(personajes, cantidadTotal, auxId);
+    if (encontrado == NULL){
+        printf("ERROR: Personaje con ID %d no encontrado\n", auxId);
+    }else{
+        printf("\n - PERSONAJE ENCONTRADO!! -\n");
+        printf("ID: %d\n", encontrado->id);
+        printf("Nombre: %s\n", encontrado->nombre);
+        printf("Nivel: %d\n", encontrado->nivel);
+        printf("Vida: %d\n", encontrado->vida);
+        printf("Ataque: %d\n", encontrado->ataque);
+        printf("Defensa: %d\n", encontrado->defensa);
+        printf("Puntos de Mejora: %d\n", encontrado->puntosMejora);
+    }
+}
+
+
+//mostrar todos los personajes
+void mostrarTodos(struct Personaje* personajes, int cantidadTotal){
+    printf("\n\n- TODOS LOS PERSONAJES - \n\n");
+
+    for(int i=0; i < cantidadTotal; i++){
+        printf("ID: %d\n", (personajes + i)->id);
+        printf("Nombre: %s\n", (personajes + i)->nombre);
+        printf("Nivel: %d\n", (personajes + i)->nivel);
+        printf("Vida: %d\n", (personajes + i)->vida);
+        printf("Ataque: %d\n", (personajes + i)->ataque);
+        printf("Defensa: %d\n", (personajes + i)->defensa);
+        printf("Puntos de Mejora: %d\n\n\n", (personajes + i)->puntosMejora);
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
