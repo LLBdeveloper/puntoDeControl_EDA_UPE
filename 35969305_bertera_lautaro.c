@@ -49,6 +49,8 @@ struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTota
 struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, int id);
 void mostrarPersonaje(struct Personaje* personajes, int cantidadTotal);
 void mostrarTodos(struct Personaje* personajes, int cantidadTotal);
+void pelear(struct Personaje* personajes, int cantidadTotal);
+
 
 
 /////////////////////////
@@ -59,6 +61,7 @@ int main() {
     int* pContadorPersonajes = &contadorPersonajes;
 
     // pedimos un maximo de personajes y lo almacenamos en el heap
+    fflush(stdin);
     printf("Cuantos personajes como maximo se podran registrar???\n");
     int* maxCharacters = (int*)malloc(sizeof(int));
     if (maxCharacters == NULL) {
@@ -84,7 +87,7 @@ int main() {
         printf("\033[34m3 - Luchar\n\033[0m");
         printf("\033[34m4 - Buscar y ver personaje\n\033[0m");
         printf("\033[34m5 - Ver todos los personajes\n\033[0m");
-        printf("\033[34m6 - Salir\n\033[0m");
+        printf("\033[34m0 - Salir\n\033[0m");
         printf("\n Elige una opcion: ");
         scanf("%d", &botonMenu);
 
@@ -102,7 +105,7 @@ int main() {
                 break;
 
             case 3:
-                printf("fight (a implementar)\n");
+                pelear(personajes, *pContadorPersonajes);
                 break;
 
             case 4:
@@ -110,12 +113,12 @@ int main() {
                 break;
 
             case 5:
-                printf("ver todos)\n");
                 mostrarTodos(personajes,*pContadorPersonajes);
+                break;
 
-            case 6:
+            case 0:
                 printf("EXIT\n");
-                botonMenu = 6;
+                botonMenu = 0;
                 break;
 
 
@@ -123,7 +126,7 @@ int main() {
                 printf("- ERROR - Ingreso invalido\n");
                 break;
         }
-    } while (botonMenu != 6);
+    } while (botonMenu != 0);
 
     free(maxCharacters);
     free(personajes);
@@ -135,8 +138,11 @@ int main() {
 // Funciones
 /////////////////////////
 
+//funcion
 // crea un nuevo struct Personaje y lo almacena directamente en el heap
 void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
+    printf("\n\n\n\n\n\n");
+
     struct Personaje* nuevo = listaPersonajes + *cantidadTotal;
     char nombreIngresado[30];
     int valido = 0;
@@ -156,7 +162,7 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
     }
     strcpy(nuevo->nombre, nombreIngresado);
 
-    // asignar id y atributos por defecto
+    //asignar id y atributos por defecto
     nuevo->id = *cantidadTotal + 1;
     nuevo->nivel = 1;
     nuevo->vida = 10;
@@ -164,7 +170,7 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
     nuevo->defensa = 1;
     nuevo->puntosMejora = 10;
 
-    // distribuir los puntos de mejora iniciales
+    //distribuir los puntos de mejora iniciales
     int opcion;
     while (nuevo->puntosMejora > 0) {
         printf("\nDistribuir los puntos de mejora (%d restantes):\n", nuevo->puntosMejora);
@@ -199,11 +205,14 @@ void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal) {
            nuevo->vida, nuevo->ataque, nuevo->defensa, nuevo->nivel);
 }
 
-// asigna lospuntos de mejora a un personaje buscado por nombre
+
+
+//funcion
+//asigna lospuntos de mejora a un personaje buscado por nombre
 void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal) {
     char buscado[30];
     int auxEleccion;
-
+    printf("\n\n\n\n\n\n");
     printf("Ingrese el nombre del personaje a mejorar: ");
     scanf("%s", buscado);
 
@@ -249,7 +258,10 @@ void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal) {
     printf("\nProceso de mejora finalizado para %s\n", personajeActual->nombre);
 }
 
-// busca personaje por nombre con aritmetica de punt
+
+
+//funcion
+//busca personaje por nombre con aritmetica de punt
 struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre) {
     struct Personaje* pProcesado = personajes;
     struct Personaje* encontrado = NULL;
@@ -263,6 +275,7 @@ struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTota
 }
 
 
+//funcion
 //busca personaje por ID
 struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, int id){
     struct Personaje* pProcesado = personajes;
@@ -276,8 +289,13 @@ struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, i
     return encontrado;
 }
 
+
+
+//funcion
 //mostrar personaje buscado por id
 void mostrarPersonaje(struct Personaje* personajes, int cantidadTotal){
+    printf("\n\n\n\n\n\n");
+
     int auxId;
     printf("Ingrese ID del personaje que quiere ver:");
     scanf("%d",&auxId);
@@ -297,9 +315,16 @@ void mostrarPersonaje(struct Personaje* personajes, int cantidadTotal){
     }
 }
 
-
+//funcion
 //mostrar todos los personajes
 void mostrarTodos(struct Personaje* personajes, int cantidadTotal){
+    printf("\n\n\n\n\n\n");
+
+    if (cantidadTotal == 0) {
+        printf("No hay personajes creados\n");
+        return;
+    }
+
     printf("\n\n- TODOS LOS PERSONAJES - \n\n");
 
     for(int i=0; i < cantidadTotal; i++){
@@ -314,6 +339,57 @@ void mostrarTodos(struct Personaje* personajes, int cantidadTotal){
 }
 
 
+
+//funcion
+//muestra todos los personajes y se eligen dos  para ejecutar la pelea
+void pelear(struct Personaje* personajes, int cantidadTotal){
+    printf("\n\n\n\n\n\n");
+    //verificamos que tengamos personajes creados
+    if (cantidadTotal < 2) {
+        printf("No hay un minimo de dos personajes creados\n");
+        return;
+    }
+    // mostramos todos los existentes
+    mostrarTodos(personajes, cantidadTotal);
+
+    //pedimos al usuario los id
+    int auxIdUno;
+    int auxIdDos;
+    printf("\n\n\n\n\n\n");
+    printf("\n\n\n Seleccione dos personajes para luchar: \n\n");
+    printf("\nIngrese ID del personaje que sera asignado ATACANTE:\n");
+    scanf("%d", &auxIdUno);
+    printf("\nIngrese ID del personaje que sera asignado DEFENSOR:\n");
+    scanf("%d", &auxIdDos);
+    //verifiamos que no ingrese el mismo
+    if (auxIdUno == auxIdDos) {
+        printf("ERROR: No se puede elegir el mismo personaje dos veces\n");
+        return;
+    }
+
+
+    struct Personaje* seleccionadoUno = buscarPorId(personajes, cantidadTotal, auxIdUno);
+    struct Personaje* seleccionadoDos = buscarPorId(personajes, cantidadTotal, auxIdDos);
+    printf("\n\n\n\n\n\n");
+    printf("\033[31m\n\n    - - - - - - - -  %s  vs %s  - - - - - - - - -\n\n\033[0m\n",seleccionadoUno->nombre,seleccionadoDos->nombre);
+    printf("\033[31m\n\n           !!!! ARRANCA LA PELEA !!!!  \n\n\033[0m\n",seleccionadoUno->nombre,seleccionadoDos->nombre);
+
+
+    printf("\033[32m\n\nATRIBUTOS DEL JUGADOR ATACANTE\n\n\033[0m\n");
+    printf("Nombre: %s\n", seleccionadoUno->nombre);
+    printf("Nivel: %d\n", seleccionadoUno->nivel);
+    printf("Vida: %d\n", seleccionadoUno->vida);
+    printf("Ataque: %d\n", seleccionadoUno->ataque);
+    printf("Defensa: %d\n", seleccionadoUno->defensa);
+
+    printf("\033[32m\n\nATRIBUTOS DEL JUGADOR DEFENSOR\n\n\033[0m\n");
+    printf("Nombre: %s\n", seleccionadoDos->nombre);
+    printf("Nivel: %d\n", seleccionadoDos->nivel);
+    printf("Vida: %d\n", seleccionadoDos->vida);
+    printf("Ataque: %d\n", seleccionadoDos->ataque);
+    printf("Defensa: %d\n", seleccionadoDos->defensa);
+
+}
 
 
 
