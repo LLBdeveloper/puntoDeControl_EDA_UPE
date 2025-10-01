@@ -46,7 +46,7 @@ struct Personaje {
 void crearPersonaje(struct Personaje* listaPersonajes, int* cantidadTotal);
 void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal);
 struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre);
-
+struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, int id);
 
 /////////////////////////
 // MAIN
@@ -237,16 +237,31 @@ void mejorarPersonaje(struct Personaje* listaPersonajes, int cantidadTotal) {
 
 // busca personaje por nombre con aritmetica de punt
 struct Personaje* buscarPorNombre(struct Personaje* personajes, int cantidadTotal, char* nombre) {
-    struct Personaje* procesado = personajes;
+    struct Personaje* pProcesado = personajes;
     struct Personaje* encontrado = NULL;
 
     for (int i = 0; i < cantidadTotal; i++){
-        if (strcmp((procesado + i)->nombre, nombre) ==0){
-            encontrado = (procesado + i);
+        if (strcmp((pProcesado + i)->nombre, nombre) ==0){
+            encontrado = (pProcesado + i);
         }
     }
     return encontrado;
 }
+
+
+//busca personaje por ID
+struct Personaje* buscarPorId(struct Personaje* personajes, int cantidadTotal, int id){
+    struct Personaje* pProcesado = personajes;
+    struct Personaje* encontrado = NULL;
+
+    for (int i = 0; i < cantidadTotal; i++){
+        if ((pProcesado + i)->id == id){
+            encontrado = (pProcesado + i);
+        }
+    }
+    return encontrado;
+}
+
 
 
 /*
